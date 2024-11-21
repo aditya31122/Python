@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 325px;
+            max-width: calc(100vw - 40px);
+            height: 440px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e3e3e3;
+            z-index: 1000;
+            display: none;
+        }
+
+        .chat-container {
+            max-width: 110%;
+            width: auto;
+            height: calc(100% - 50px);
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .user-input-container {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            background-color: #e3e3e3;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #user-input {
+            flex: 1;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        #send-btn {
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .chatbot-heading {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .close-btn {
+            position: absolute;
+            top: 0px;
+            right: 1px;
+            cursor: pointer;
+            background-color: #dc3545;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-btn-1 {
+            margin: 5px;
+            padding: 8px 15px;
+            background-color: #76dc8c;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 13.5px;
+            cursor: pointer;
+        }
+        .option-btn-2 {
+            margin: 5px;
+            padding: 8px 15px;
+            background-color: #76dc8c;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 13.5px;
+            cursor: pointer;
+        }
+        .option-btn-3 {
+            margin: 5px;
+            padding: 8px 15px;
+            background-color: #76dc8c;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 13.5px;
+            cursor: pointer;
+        }
+        .sub-option-btn{
+            margin: 5px;
+            padding: 8px 15px;
+            background-color: #55e2b8;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 13.5px;
+            cursor: pointer;
+        }
+        .main-menu{
+            margin: 5px;
+            padding: 8px 15px;
+            background-color: #55e2b8;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 13.5px;
+            cursor: pointer;
+        }        
+        .support-btn{
+            margin: 5px;
+            padding: 8px 15px;
+            background-color: #76dc8c;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 13.5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="chatbot-icon" id="chatbot-icon">&#128172;</div>
+
+    <div class="chatbot-container" id="chatbot-container">
+        <span class="close-btn" id="close-btn">&times;</span>
+        <div class="chat-container" id="chat-container">
+            <h5 class="chatbot-heading">SalaryCredits</h5>
+            <div class='row'>
+                <div class='col-md-6'>
+                    <div class='bg-secondary text-white p-2 rounded mb-2'>Hi there! I'm Aida. How can I help you today?</div>
+                </div>
+            </div>
+            <div id="options-container" style="display: none;">
+                <button class="option-btn-1" id="option-1">What is my left over EMI</button>
+                <div id="sub-options-container-1" style="display: none;">
+                    <button class="sub-option-btn" id="option-1.1">Emi</button>
+                    <button class="sub-option-btn" id="option-1.2">How much</button>
+                    <button class="sub-option-btn" id="option-1.3">Can I apply</button>
+                </div>
+                <button class="option-btn-2" id="option-2">What is AI</button>
+                <div id="sub-options-container-2" style="display: none;">
+                    <button class="sub-option-btn" id="option-2.1">2.1</button>
+                    <button class="sub-option-btn" id="option-2.2">2.2</button>
+                    <button class="sub-option-btn" id="option-2.3">2.3</button>
+                    <button class="sub-option-btn" id="option-2.4">2.4</button>
+                </div>
+                <button class="option-btn-3" id="option-3">Can I apply for loan</button>
+                <div id="sub-options-container-3" style="display: none;">
+                    <button class="sub-option-btn" id="option-3.1">3.1</button>
+                    <button class="sub-option-btn" id="option-3.2">3.2</button>
+                    <button class="sub-option-btn" id="option-3.3">3.3</button>
+                    <button class="sub-option-btn" id="option-3.4">3.4</button>
+                </div>
+                <button class="main-menu" id="main-menu">main menu</button>
+                <button id="support-btn" class="support-btn">Support</button>
+
+            </div>
+        </div>
+
+        <div class="user-input-container">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    var user_type = '{{ user_type }}'
+    $(document).ready(function() {
+        var typingTimer;  // Timer identifier
+        var doneTypingInterval = 100;  // Time in milliseconds (0.1 second)
+
+        // On keyup event in the input field, start the countdown
+        $('#user-input').keyup(function(){
+            clearTimeout(typingTimer);  // Clear the previous timer
+            if ($('#user-input').val()) {  // Check if the input field is not empty
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);  // Start the timer
+            }
+        });
+    
+
+        // When the user stops typing, send a message to the server
+        function doneTyping() {
+            // Send an indication to the server that the user is typing
+            $.ajax({
+                type: "POST",
+                url: "/user_typing",
+                data: { typing: true },  // You can send any relevant data to the server
+                success: function(response) {
+                    console.log("User is typing...");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });     
+        }   
+         // Inactivity timeout
+         var userActive = false;
+         var inactiveTimeout;
+
+        function resetInactiveTimeout() {
+            clearTimeout(inactiveTimeout);
+            inactiveTimeout = setTimeout(function() {
+                if (!userActive) {
+                    showResetPrompt();
+                }
+            }, 5*1000); // 5 minutes in milliseconds
+        }
+
+        document.addEventListener('mousemove', function() {
+            userActive = true;
+            resetInactiveTimeout();
+        });
+
+        document.addEventListener('keydown', function() {
+            userActive = true;
+            resetInactiveTimeout();
+        });
+
+        function showResetPrompt() {
+            var reset = confirm("It seems you've been inactive for a while. Do you want to reset the chatbot?");
+            if (reset) {
+                resetChatbot();
+            }
+        }
+
+        function resetChatbot() {
+            $("#chat-container").html(''); // Clear chat history
+
+            // Reset any relevant variables or states
+            // ...
+
+            // Reset inactive timeout
+            userActive = false;
+            resetInactiveTimeout();
+        }
+
+        function setUserType(type) {
+        user_type = type;
+    }
+    
+        var greeted = false; // Flag to track whether user has been greeted
+        var saidBye = false; // Flag to track whether user said "bye" before closing
+
+        // Function to greet the user
+        function greetUser() {
+            if (!greeted || saidBye) {
+                $("#options-container").show(); 
+                $("#main-menu").hide();
+                greeted = true; // Set greeted flag to true
+                saidBye = false; // Reset saidBye flag
+            }
+        }        // Toggle chatbot container on chatbot icon click
+        $("#chatbot-icon").click(function() {
+            $("#chatbot-container").toggle();
+            if ($("#chatbot-container").is(":visible")) {
+                greetUser(); // Greet user when chatbot container is opened
+                $("#options-container").show();
+            } else {
+                $("#options-container").hide();
+            }            
+
+        });
+
+        $("#support-btn").click(function() {
+        var chatLog = $("#chat-container").html();
+        $.ajax({
+            type: "POST",
+            url: "/send_support_email",
+            data: { chat_log: chatLog },
+            success: function(response) {
+                alert(response.message);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+                alert("An error occurred while sending the support email.");
+                }
+            });
+        });
+
+        $("#close-btn").click(function() {
+            $("#chatbot-container").hide();
+            $("#options-container").hide();
+            if (!saidBye) {
+                greeted = false; // Reset greeted flag if user didn't say "bye" before closing
+            }
+
+        });
+
+        $(".option-btn-1").click(function() {
+            $("#option-2").hide();
+            $("#option-3").hide();
+            $("#sub-options-container-1").show();
+            $("#main-menu").show();
+        });
+        $(".option-btn-2").click(function() {
+            $("#option-1").hide();
+            $("#option-3").hide();
+            $("#sub-options-container-2").show();
+            $("#main-menu").show();
+
+        });
+        $(".option-btn-3").click(function() {
+            $("#option-1").hide();
+            $("#option-2").hide();
+            $("#sub-options-container-3").show();
+            $("#main-menu").show();
+        });
+        $(".main-menu").click(function() {
+            $("#option-1").show();
+            $("#option-2").show();
+            $("#option-3").show();
+            $("#sub-options-container-1").hide();
+            $("#sub-options-container-2").hide();
+            $("#sub-options-container-3").hide();
+            $("#main-menu").hide();
+        });
+
+        $("#send-btn").click(function() {
+            sendMessage();
+        });
+
+        $("#user-input").keypress(function(event) {
+            if (event.which == 13) {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            var userMessage = $("#user-input").val().trim();
+            if (userMessage !== "") {
+                $("#chat-container").append("<div class='row'><div class='col-md-6 ml-auto'><div class='bg-primary text-white p-2 rounded mb-2 text-right'>" + userMessage + "</div></div></div>");
+                $("#user-input").val(""); // Clear input field
+    
+                $.ajax({
+                    type: "POST",
+                    url: "/get_response",
+                    data: { user_message: userMessage, user_type: user_type  }, // Pass user type to the server
+                    success: function(response) {
+                        console.log("Server response:", response); // Log the server response
+                        if (response) {
+               
+                            $("#chat-container").append("<div class='row'><div class='col-md-6'><div class='bg-secondary text-white p-2 rounded mb-2'>" + response + "</div></div></div>");
+                            // Scroll to bottom of chat container
+                            $("#chat-container").scrollTop($("#chat-container")[0].scrollHeight);
+                        } else {
+                            console.error("Empty response from server");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error); // Log any errors
+                    }
+                });
+
+            }
+        }
+
+        $(".sub-option-btn").click(function()   {
+            var optionText = $(this).text(); // Get text of the clicked option
+            $("#chat-container").append("<div='row'><div class='col-md-6 ml-auto'><div class='bg-primary text-white p-2 rounded mb-2'>" + optionText + "</div></div></div>");
+            var optionNumber = $(this).attr("id").split("-")[1]; // Extract option number from button id
+            $.ajax({
+                type: "POST",
+                url: "/get_sub_option_response", // Modify the URL to the appropriate endpoint for option responses
+                data: { option_number: optionNumber, option_text: optionText,user_type: user_type  }, // Send option text as well
+                success: function(response) {
+                    $("#chat-container").append("<div class='row'><div class='col-md-6'><div class='bg-secondary text-white p-2 rounded mb-2'>" + response + "</div></div></div>");
+                    // Scroll to bottom of chat container
+                    $('#chat-container').scrollTop($('#chat-container')[0].scrollHeight);
+                }
+            });
+        });    
+    });
+    </script>
+</body>
+</html>
